@@ -16,8 +16,8 @@ export async function getBooksByGenre(_, args) {
   return books;
 }
 
-export async function getUserFavorites(_, args) {
-  const user = await userModel.findById(args.userId);
+export async function getUserFavorites(parent) {
+  const user = await userModel.findById(parent._id);
   const books = user.favoriteBooks;
   console.log(books);
   return books;
@@ -26,7 +26,7 @@ export async function getUserFavorites(_, args) {
 export async function addbook(_, args) {
   const newBook = new bookModel({
     title: args.title,
-    author: args.author,
+    author_id: args.author_id,
     genere: args.genere,
     price: args.price,
     publicationDate: args.publicationDate,
@@ -80,4 +80,9 @@ export async function deleteFavoriteBook(_, args) {
     return book._id.toString() !== args.bookId.toString();
   });
   await user.save();
+}
+
+export async function getBookAuthor(parent) {
+  const user = await userModel.findById(parent.author_id);
+  return user;
 }

@@ -7,13 +7,21 @@ import {
   GraphQLObjectType,
   GraphQLString,
 } from 'graphql';
-import { Types } from 'mongoose';
+import { getBookAuthor, getUserFavorites } from '../services/book.js';
+import { getBookReviews, getUserReviews } from '../services/review.js';
 
 export const UserType = new GraphQLObjectType({
   name: 'User',
   fields: () => ({
+    _id: { type: GraphQLID },
     email: { type: GraphQLNonNull(GraphQLString) },
     password: { type: GraphQLNonNull(GraphQLString) },
+    favoriteGenres: { type: GraphQLList(GraphQLString) },
+    favoriteBooks: {
+      type: GraphQLList(BookType),
+      resolve: getUserFavorites,
+    },
+    reviews: { type: GraphQLList(ReviewType), resolve: getUserReviews },
   }),
 });
 
@@ -30,11 +38,11 @@ export const BookType = new GraphQLObjectType({
   fields: () => ({
     _id: { type: GraphQLID },
     title: { type: GraphQLNonNull(GraphQLString) },
-    author: { type: GraphQLNonNull(GraphQLString) },
+    author: { type: GraphQLNonNull(UserType), resolve: getBookAuthor },
     genere: { type: GraphQLNonNull(GraphQLString) },
     price: { type: GraphQLNonNull(GraphQLFloat) },
     publicationDate: { type: GraphQLNonNull(GraphQLString) },
-    reviews: { type: GraphQLList(ReviewType) },
+    reviews: { type: GraphQLList(ReviewType), resolve: getBookReviews },
     avgRating: { type: GraphQLFloat },
   }),
 });
@@ -42,7 +50,7 @@ export const BookType = new GraphQLObjectType({
 export const ReviewType = new GraphQLObjectType({
   name: 'Review',
   fields: () => ({
-    _id: { type: GraphQLInt },
+    _id: { type: GraphQLID },
     book: { type: GraphQLNonNull(BookType) },
     user: { type: GraphQLNonNull(UserType) },
     rating: { type: GraphQLNonNull(GraphQLInt) },

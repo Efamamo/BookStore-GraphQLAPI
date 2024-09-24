@@ -1,13 +1,14 @@
 import {
   GraphQLFloat,
   GraphQLID,
+  GraphQLInt,
   GraphQLList,
   GraphQLNonNull,
   GraphQLObjectType,
   GraphQLString,
 } from 'graphql';
 import { signin, signup } from '../services/auth.js';
-import { BookType, Token, UserType } from './types.js';
+import { BookType, ReviewType, Token, UserType } from './types.js';
 import {
   addbook,
   addFavoriteBook,
@@ -16,6 +17,7 @@ import {
   updatebook,
 } from '../services/book.js';
 import { GraphQLVoid } from 'graphql-scalars';
+import { addReview, deleteReview, updateReview } from '../services/review.js';
 
 export const MutationType = new GraphQLObjectType({
   name: 'Mutation',
@@ -40,7 +42,7 @@ export const MutationType = new GraphQLObjectType({
       type: BookType,
       args: {
         title: { type: GraphQLNonNull(GraphQLString) },
-        author: { type: GraphQLNonNull(GraphQLString) },
+        author_id: { type: GraphQLNonNull(GraphQLID) },
         genere: { type: GraphQLNonNull(GraphQLString) },
         price: { type: GraphQLNonNull(GraphQLFloat) },
         publicationDate: { type: GraphQLNonNull(GraphQLString) },
@@ -53,7 +55,7 @@ export const MutationType = new GraphQLObjectType({
       args: {
         id: { type: GraphQLNonNull(GraphQLID) },
         title: { type: GraphQLString },
-        author: { type: GraphQLString },
+        author_id: { type: GraphQLID },
         genere: { type: GraphQLString },
         price: { type: GraphQLFloat },
         publicationDate: { type: GraphQLString },
@@ -83,6 +85,37 @@ export const MutationType = new GraphQLObjectType({
         bookId: { type: GraphQLNonNull(GraphQLID) },
       },
       resolve: deleteFavoriteBook,
+    },
+
+    addReview: {
+      type: ReviewType,
+      args: {
+        user_id: { type: GraphQLNonNull(GraphQLID) },
+        book_id: { type: GraphQLNonNull(GraphQLID) },
+        rating: { type: GraphQLNonNull(GraphQLInt) },
+        comment: { type: GraphQLString },
+      },
+      resolve: addReview,
+    },
+
+    updateReview: {
+      type: ReviewType,
+      args: {
+        id: { type: GraphQLID },
+        user_id: { type: GraphQLID },
+        book_id: { type: GraphQLID },
+        rating: { type: GraphQLInt },
+        comment: { type: GraphQLString },
+      },
+      resolve: updateReview,
+    },
+
+    deleteReview: {
+      type: GraphQLVoid,
+      args: {
+        id: { type: GraphQLID },
+      },
+      resolve: deleteReview,
     },
   }),
 });

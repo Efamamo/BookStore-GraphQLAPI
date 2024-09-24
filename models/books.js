@@ -1,8 +1,8 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose, { Schema, Types } from 'mongoose';
 
 const BookSchema = new Schema({
   title: { type: String, required: true },
-  author: { type: String, required: true },
+  author_id: { type: Types.ObjectId, required: true },
   genere: { type: String, required: true },
   price: { type: Number, required: true },
   publicationDate: { type: String, required: true },

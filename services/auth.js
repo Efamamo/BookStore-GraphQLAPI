@@ -30,3 +30,13 @@ export async function signin(_, args) {
   const token = jwt.sign({ email: user.email }, 'dcfvgbhnjm,rfcdxsdcfvgbhn');
   return { accessToken: token };
 }
+
+export async function getUsers() {
+  const users = await userModel.find();
+  return users;
+}
+
+export async function getUserById(_, args) {
+  const user = await userModel.findById(args.id);
+  return user;
+}
