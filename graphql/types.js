@@ -28,7 +28,7 @@ export const Token = new GraphQLObjectType({
 export const BookType = new GraphQLObjectType({
   name: 'Book',
   fields: () => ({
-    id: { type: GraphQLNonNull(GraphQLID) },
+    _id: { type: GraphQLID },
     title: { type: GraphQLNonNull(GraphQLString) },
     author: { type: GraphQLNonNull(GraphQLString) },
     genere: { type: GraphQLNonNull(GraphQLString) },
@@ -42,7 +42,7 @@ export const BookType = new GraphQLObjectType({
 export const ReviewType = new GraphQLObjectType({
   name: 'Review',
   fields: () => ({
-    id: { type: GraphQLNonNull(GraphQLInt) },
+    _id: { type: GraphQLInt },
     book: { type: GraphQLNonNull(BookType) },
     user: { type: GraphQLNonNull(UserType) },
     rating: { type: GraphQLNonNull(GraphQLInt) },
