@@ -11,6 +11,9 @@ import {
   GraphQLSchema,
 } from 'graphql';
 import userModel from './models/user.js';
+import { signin, signup } from './services/auth.js';
+import { MutationType } from './graphql/mutation.js';
+import { RootQueryType } from './graphql/query.js';
 
 const app = express();
 mongoose
@@ -19,85 +22,6 @@ mongoose
   .catch((e) => {
     console.log(e);
   });
-
-const UserType = new GraphQLObjectType({
-  name: 'User',
-  fields: () => ({
-    email: { type: GraphQLNonNull(GraphQLString) },
-    password: { type: GraphQLNonNull(GraphQLString) },
-  }),
-});
-
-const RootQueryType = new GraphQLObjectType({
-  name: 'query',
-  fields: () => ({
-    users: {
-      type: GraphQLList(UserType),
-      resolve: () => users,
-    },
-  }),
-});
-
-const Token = new GraphQLObjectType({
-  name: 'Token',
-  fields: () => ({
-    message: { type: GraphQLString },
-    accessToken: { type: GraphQLString },
-  }),
-});
-
-const MutationType = new GraphQLObjectType({
-  name: 'Mutation',
-  fields: () => ({
-    signUp: {
-      type: UserType,
-      args: {
-        email: { type: GraphQLString },
-        password: { type: GraphQLString },
-      },
-      resolve: async (_, args) => {
-        const hashedPassword = await bcrypt.hash(args.password, 10);
-
-        const newUser = new userModel({
-          email: args.email,
-          password: hashedPassword,
-        });
-
-        newUser.save();
-        return newUser;
-      },
-    },
-    signIn: {
-      type: Token,
-      args: {
-        email: { type: GraphQLString },
-        password: { type: GraphQLString },
-      },
-      resolve: async (_, args) => {
-        const user = await userModel.findOne({ email: args.email });
-
-        if (!user) {
-          return { message: 'Invalid Credentials' };
-        }
-
-        const comparePassword = await bcrypt.compare(
-          args.password,
-          user.password
-        );
-
-        if (!comparePassword) {
-          return { message: 'Invalid Credentials' };
-        }
-
-        const token = jwt.sign(
-          { email: user.email },
-          'dcfvgbhnjm,rfcdxsdcfvgbhn'
-        );
-        return { accessToken: token };
-      },
-    },
-  }),
-});
 
 const schema = new GraphQLSchema({
   query: RootQueryType,
