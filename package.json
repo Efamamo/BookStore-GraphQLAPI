@@ -1,0 +1,30 @@
+{
+  "name": "bookstore-graphqlapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Efamamo/BookStore-GraphQLAPI.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Efamamo/BookStore-GraphQLAPI/issues"
+  },
+  "type": "module",
+  "homepage": "https://github.com/Efamamo/BookStore-GraphQLAPI#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "express": "^4.21.0",
+    "express-graphql": "^0.12.0",
+    "graphql": "^15.9.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.6.3",
+    "nodemon": "^3.1.7"
+  }
+}
