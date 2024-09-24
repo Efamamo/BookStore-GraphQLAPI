@@ -5,7 +5,7 @@ const BookSchema = new Schema({
   author: { type: String, required: true },
   genere: { type: String, required: true },
   price: { type: Number, required: true },
-  publicationDate: { type: Date, required: true },
+  publicationDate: { type: String, required: true },
   reviews: { type: Array },
   avgRating: { type: Number },
 });

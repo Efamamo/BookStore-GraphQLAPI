@@ -21,3 +21,16 @@ export async function getUserFavorites(_, args) {
   const books = user.favoriteBooks;
   return books;
 }
+
+export async function addbook(_, args) {
+  const newBook = new bookModel({
+    title: args.title,
+    author: args.author,
+    genere: args.genere,
+    price: args.price,
+    publicationDate: args.publicationDate,
+  });
+
+  await newBook.save();
+  return newBook;
+}

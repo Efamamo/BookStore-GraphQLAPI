@@ -1,10 +1,11 @@
 import {
+  GraphQLID,
   GraphQLInt,
   GraphQLList,
   GraphQLObjectType,
   GraphQLString,
 } from 'graphql';
-import { BookType, UserType } from './types.js';
+import { BookType } from './types.js';
 import {
   getBookById,
   getBooks,
@@ -13,7 +14,7 @@ import {
 } from '../services/book.js';
 
 export const RootQueryType = new GraphQLObjectType({
-  name: 'query',
+  name: 'RootQuery',
   fields: () => ({
     books: {
       type: GraphQLList(BookType),
@@ -21,7 +22,7 @@ export const RootQueryType = new GraphQLObjectType({
     },
     book: {
       type: BookType,
-      args: { id: { type: GraphQLInt } },
+      args: { id: { type: GraphQLID } },
       resolve: getBookById,
     },
     booksByGenre: {
@@ -32,7 +33,7 @@ export const RootQueryType = new GraphQLObjectType({
 
     favoriteBooks: {
       type: GraphQLList(BookType),
-      args: { userId: { type: GraphQLInt } },
+      args: { userId: { type: GraphQLID } },
       resolve: getUserFavorites,
     },
   }),

@@ -1,11 +1,13 @@
 import {
   GraphQLFloat,
+  GraphQLID,
   GraphQLInt,
   GraphQLList,
   GraphQLNonNull,
   GraphQLObjectType,
   GraphQLString,
 } from 'graphql';
+import { Types } from 'mongoose';
 
 export const UserType = new GraphQLObjectType({
   name: 'User',
@@ -26,7 +28,7 @@ export const Token = new GraphQLObjectType({
 export const BookType = new GraphQLObjectType({
   name: 'Book',
   fields: () => ({
-    id: { type: GraphQLNonNull(GraphQLInt) },
+    id: { type: GraphQLNonNull(GraphQLID) },
     title: { type: GraphQLNonNull(GraphQLString) },
     author: { type: GraphQLNonNull(GraphQLString) },
     genere: { type: GraphQLNonNull(GraphQLString) },
